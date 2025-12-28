@@ -18,7 +18,7 @@ npm install
 npm start
 ```
 
-The frontend will run on http://localhost:3001 (or next available port) and the backend on http://localhost:3000.
+The frontend will run on http://localhost:3001 and the backend on http://localhost:3000.
 
 ## API Endpoints
 
@@ -75,4 +75,5 @@ The frontend will run on http://localhost:3001 (or next available port) and the 
 - Additional limitations include missing indexes, lack of pagination, and synchronous processing.
 
 - Scaling would require PostgreSQL, proper indexing, pagination, and async processing.
+
 
