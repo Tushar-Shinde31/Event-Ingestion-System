@@ -74,7 +74,6 @@ const ingestEvent = (req, res) => {
   );
 };
 
-// Get processed events for frontend display
 const getProcessedEvents = (req, res) => {
   db.all(
     `SELECT id, client_id, metric, amount, timestamp, created_at 
@@ -91,7 +90,6 @@ const getProcessedEvents = (req, res) => {
   );
 };
 
-// Get failed events for frontend display
 const getFailedEvents = (req, res) => {
   db.all(
     `SELECT id, raw_payload, error_message, created_at 

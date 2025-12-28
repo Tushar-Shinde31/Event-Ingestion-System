@@ -12,24 +12,22 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
-  // Load initial data
+
   useEffect(() => {
     refreshData();
   }, []);
 
   const refreshData = async () => {
     try {
-      // Fetch processed events
+  
       const processedRes = await fetch(`${API_BASE}/events/processed`);
       const processed = await processedRes.json();
       setProcessedEvents(processed);
 
-      // Fetch failed events
       const failedRes = await fetch(`${API_BASE}/events/failed`);
       const failed = await failedRes.json();
       setFailedEvents(failed);
 
-      // Fetch aggregates
       const aggRes = await fetch(`${API_BASE}/aggregates`);
       const agg = await aggRes.json();
       setAggregates(agg);
@@ -89,7 +87,6 @@ function App() {
       </header>
 
       <main>
-        {/* Event Submission Form */}
         <section className="section">
           <h2>Submit Event</h2>
           <form onSubmit={handleSubmit}>
@@ -125,7 +122,6 @@ function App() {
           </form>
         </section>
 
-        {/* Aggregated Results */}
         <section className="section">
           <h2>Aggregated Results</h2>
           <div className="aggregates">
@@ -138,7 +134,6 @@ function App() {
           </div>
         </section>
 
-        {/* Processed Events */}
         <section className="section">
           <h2>Successfully Processed Events</h2>
           <div className="events-list">
@@ -171,7 +166,6 @@ function App() {
           </div>
         </section>
 
-        {/* Failed Events */}
         <section className="section">
           <h2>Failed / Rejected Events</h2>
           <div className="events-list">

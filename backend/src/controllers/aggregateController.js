@@ -3,7 +3,6 @@ const db = require("../db");
 const getAggregates = (req, res) => {
   const { client_id, from, to } = req.query;
 
-  // Build query with optional filters
   let query = `SELECT COUNT(*) as total_count, SUM(amount) as total_amount 
                FROM processed_events WHERE 1=1`;
   const params = [];
@@ -28,7 +27,7 @@ const getAggregates = (req, res) => {
       return res.status(500).json({ error: "Failed to fetch aggregates" });
     }
 
-    // Handle null values from SUM when no rows exist
+
     const totalCount = row.total_count || 0;
     const totalAmount = row.total_amount || 0;
 
