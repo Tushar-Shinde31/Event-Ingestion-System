@@ -31,47 +31,48 @@ The frontend will run on http://localhost:3001 (or next available port) and the 
 
 ### 1. What assumptions did you make?
 
-Client events are unreliable and may have missing or malformed fields.
+- Client events are unreliable and may have missing or malformed fields.
 
-There is no trusted event ID, so duplicates are identified using event content.
+- There is no trusted event ID, so duplicates are identified using event content.
 
-Events with the same client_id, metric, amount, and timestamp are treated as duplicates.
+- Events with the same client_id, metric, amount, and timestamp are treated as duplicates.
 
-SQLite is sufficient for a single-node, demo-scale system.
+- SQLite is sufficient for a single-node, demo-scale system.
 
-Timestamps are normalized to ISO format and amounts are treated as integers.
+- Timestamps are normalized to ISO format and amounts are treated as integers.
 
-The system runs as a single instance without authentication.
+- The system runs as a single instance without authentication.
 
 ### 2. How does your system prevent double counting?
 
-Each normalized event generates a deterministic hash using
-client_id + metric + amount + timestamp.
+- Each normalized event generates a deterministic hash using
+  client_id + metric + amount + timestamp.
 
-This hash is stored with a UNIQUE constraint in the processed_events table.
+- This hash is stored with a UNIQUE constraint in the processed_events table.
 
-If the same event is retried, the database rejects the duplicate insert.
+- If the same event is retried, the database rejects the duplicate insert.
 
-Aggregations read only from processed_events, so duplicates and failed events are never counted.
+- Aggregations read only from processed_events, so duplicates and failed events are never counted.
 
 ### 3. What happens if the database fails mid-request?
 
-Raw events are always stored first.
+- Raw events are always stored first.
 
-Events are inserted into processed_events only after successful normalization.
+- Events are inserted into processed_events only after successful normalization.
 
-If a failure occurs before or during processing, the event is not counted.
+- If a failure occurs before or during processing, the event is not counted.
 
-If a failure occurs after insertion, the event is already stored once.
+- If a failure occurs after insertion, the event is already stored once.
 
-Aggregates remain consistent because they read only from processed data.
+- Aggregates remain consistent because they read only from processed data.
 
-Retries are safe due to idempotent hashing.
+- Retries are safe due to idempotent hashing.
 
 ### 4. What would break first at scale and why?
 
-SQLite write contention would be the first bottleneck due to single-writer locking.
+- SQLite write contention would be the first bottleneck due to single-writer locking.
 
-Additional limitations include missing indexes, lack of pagination, and synchronous processing.
+- Additional limitations include missing indexes, lack of pagination, and synchronous processing.
 
-Scaling would require PostgreSQL, proper indexing, pagination, and async processing.
+- Scaling would require PostgreSQL, proper indexing, pagination, and async processing.
+
